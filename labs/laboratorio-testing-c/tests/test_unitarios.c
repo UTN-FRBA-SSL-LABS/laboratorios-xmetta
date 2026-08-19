@@ -26,19 +26,81 @@ void test_agregar_uno(void) {
  *  PARTE A — Agregar el siguiente test (ver README.md, Parte 4)
  * ═══════════════════════════════════════════════════════════════════════════ */
 
-/* TODO: pegar aqui la funcion test_total_precio_unitario() */
+void test_total_precio_unitario(void) {
+    printf("\n[total: un producto, cantidad 1]\n");
+    Carrito c;
+    carrito_init(&c);
+    Producto p = {"Leche", 350, 1};
+    carrito_agregar(&c, p);
+    ASSERT_IGUAL(350, carrito_total(&c));
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════
  *  PARTE B — Completar los blancos (ver README.md, Parte 5)
  * ═══════════════════════════════════════════════════════════════════════════ */
 
-/* TODO: pegar y completar la funcion test_total_con_cantidad() */
+void test_total_con_cantidad(void) {
+    printf("\n[total: un producto, cantidad 2]\n");
+    Carrito c;
+    carrito_init(&c);
+    Producto p = {"Leche", 350, 2};  /* 350 x 2 = 700 */
+    carrito_agregar(&c, p);
+    ASSERT_IGUAL(700, carrito_total(&c));  /* <-- completar el valor esperado */
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════
  *  PARTE C — Escribir un test propio (ver README.md, Parte 7)
  * ═══════════════════════════════════════════════════════════════════════════ */
 
-/* TODO: escribir test_carrito_lleno() */
+void test_carrito_lleno(void) {
+    printf("\n[carrito lleno]\n");
+    Carrito c;
+    carrito_init(&c);
+    Producto p = {"Leche", 350, 1};
+    for (int i = 0; i < 4; i++) {
+        carrito_agregar(&c, p);
+    }
+    ASSERT_IGUAL(0, carrito_agregar(&c, p));
+}
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  Ejercitación Extra
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+void test_buscar_existente(void) {
+    printf("\n[buscar producto existente]\n");
+    Carrito c;
+    carrito_init(&c);
+    Producto p = {"Leche", 350, 1};
+    carrito_agregar(&c, p);
+    ASSERT_IGUAL(0, carrito_buscar(&c, "Leche"));
+}
+
+void test_buscar_inexistente(void) {
+    printf("\n[buscar producto inexistente]\n");
+    Carrito c;
+    carrito_init(&c);
+    Producto p = {"Leche", 350, 1};
+    carrito_agregar(&c, p);
+    ASSERT_IGUAL(-1, carrito_buscar(&c, "Pan"));
+}
+
+void test_buscar_carrito_vacio(void) {
+    printf("\n[buscar en carrito vacio]\n");
+    Carrito c;
+    carrito_init(&c);
+    ASSERT_IGUAL(-1, carrito_buscar(&c, "Leche"));
+}
+
+void test_total_ignora_cantidad_cero(void) {
+    printf("\n[total ignora cantidad <= 0]\n");
+    Carrito c;
+    carrito_init(&c);
+    Producto p1 = {"Leche", 350, 2};   /* 700 */
+    Producto p2 = {"Pan", 200, 0};     /* se ignora */
+    carrito_agregar(&c, p1);
+    carrito_agregar(&c, p2);
+    ASSERT_IGUAL(700, carrito_total(&c));
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════
  *  main
@@ -49,9 +111,13 @@ int main(void) {
     test_carrito_nuevo();
     test_agregar_uno();
     /* Descomentar a medida que agregues las funciones: */
-    /* test_total_precio_unitario(); */
-    /* test_total_con_cantidad();    */
-    /* test_carrito_lleno();         */
+    test_total_precio_unitario(); 
+    test_total_con_cantidad();
+    test_carrito_lleno();
+    test_buscar_existente();
+    test_buscar_inexistente();
+    test_buscar_carrito_vacio();
+    test_total_ignora_cantidad_cero();
     RESUMEN();
     return EXIT_CODE();
 }
