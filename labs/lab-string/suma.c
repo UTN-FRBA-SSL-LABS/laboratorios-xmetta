@@ -10,9 +10,11 @@
  * Pista: usa ToInteger de Conversion.h para convertir cada argumento.
  *        Iterá con puntero (char **arg), no con indice entero.
  */
-
 int main(int argc, char *argv[]) {
-    (void)argc; (void)argv;
-    /* TODO */
+    int acumulador = 0;
+    for (char **arg = argv + 1; *arg != NULL; arg++) {
+        acumulador += ToInteger(*arg);
+    }
+    printf("%d\n", acumulador);
     return 0;
 }
